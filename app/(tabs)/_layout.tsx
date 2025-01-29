@@ -10,6 +10,8 @@ import { useColorScheme } from '@/hooks/useColorScheme';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
+import { Link } from 'expo-router';
+
 export default function TabLayout() {
   const colorScheme = useColorScheme();
 
@@ -18,6 +20,8 @@ export default function TabLayout() {
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: true,
+        headerRight: () => <Link href="/settings"><Ionicons name="settings" size={24} color={Colors[colorScheme ?? 'light'].tint} /></Link>,
+        headerRightContainerStyle: {right: 20},
         tabBarButton: HapticTab,
         tabBarBackground: TabBarBackground,
         tabBarStyle: Platform.select({
