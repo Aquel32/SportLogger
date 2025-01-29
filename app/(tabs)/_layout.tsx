@@ -3,10 +3,12 @@ import React from 'react';
 import { Platform } from 'react-native';
 
 import { HapticTab } from '@/components/HapticTab';
-import { IconSymbol } from '@/components/ui/IconSymbol';
 import TabBarBackground from '@/components/ui/TabBarBackground';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
+
+import AntDesign from '@expo/vector-icons/AntDesign';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -15,7 +17,7 @@ export default function TabLayout() {
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
+        headerShown: true,
         tabBarButton: HapticTab,
         tabBarBackground: TabBarBackground,
         tabBarStyle: Platform.select({
@@ -23,21 +25,29 @@ export default function TabLayout() {
             // Use a transparent background on iOS to show the blur effect
             position: 'absolute',
           },
-          default: {},
+          default: {height: 60, paddingTop: 5},
         }),
       }}>
       <Tabs.Screen
-        name="index"
+        name="history"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          title: 'Historia',
+          tabBarIcon: ({ color }) => <AntDesign name="copy1" size={28} color={color} />,
         }}
       />
       <Tabs.Screen
-        name="explore"
+        name="index"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          title: 'Trening',
+          tabBarIcon: ({ color }) => <AntDesign name="pluscircleo" size={28} color={color} />,
+        }
+      }
+      />
+      <Tabs.Screen
+        name="excercises"
+        options={{
+          title: 'Ćwiczenia',
+          tabBarIcon: ({ color }) => <Ionicons name="barbell-outline" size={28} color={color} />,
         }}
       />
     </Tabs>
