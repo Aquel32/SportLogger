@@ -1,9 +1,5 @@
 import { Text, View } from "react-native";
 
 export default function WorkoutScreen() {
-  return (
-    <View>
-      <Text>YY</Text>
-    </View>
-  );
+  return <View className="bg-primary h-full"></View>;
 }
