@@ -1,8 +1,9 @@
-import { ThemedView } from '@/components/ThemedView';
+import { View } from "react-native";
 
 export default function HistoryScreen() {
   return (
-      <ThemedView>
-      </ThemedView>
+    <View>
+      
+    </View>
   );
 }

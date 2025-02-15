@@ -1,8 +1,9 @@
-import { ThemedView } from '@/components/ThemedView';
+import { View } from "react-native";
 
 export default function ExercisesScreen() {
   return (
-      <ThemedView>
-      </ThemedView>
+    <View>
+      
+    </View>
   );
 }
