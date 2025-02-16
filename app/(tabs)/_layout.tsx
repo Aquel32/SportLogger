@@ -14,7 +14,11 @@ export default function TabLayout() {
         ),
         headerRightContainerStyle: { right: 20 },
         headerTintColor: "white",
-        tabBarStyle: { backgroundColor: "#1A1C31", borderColor: "#1A1C31" },
+        tabBarStyle: {
+          backgroundColor: "#1A1C31",
+          borderColor: "#1A1C31",
+          height: 55,
+        },
         headerStyle: { backgroundColor: "#1A1C31" },
         tabBarActiveTintColor: "#EDF2F4",
       }}
@@ -24,16 +28,16 @@ export default function TabLayout() {
         options={{
           title: "Historia",
           tabBarIcon: ({ color }) => (
-            <AntDesign name="copy1" size={28} color={color} />
+            <AntDesign name="copy1" size={24} color={color} />
           ),
         }}
       />
       <Tabs.Screen
         name="index"
         options={{
-          title: "Trening",
+          title: "Nowy Trening",
           tabBarIcon: ({ color }) => (
-            <AntDesign name="pluscircleo" size={28} color={color} />
+            <AntDesign name="pluscircleo" size={24} color={color} />
           ),
         }}
       />
@@ -42,7 +46,7 @@ export default function TabLayout() {
         options={{
           title: "Ćwiczenia",
           tabBarIcon: ({ color }) => (
-            <Ionicons name="barbell-outline" size={28} color={color} />
+            <Ionicons name="barbell-outline" size={24} color={color} />
           ),
         }}
       />
