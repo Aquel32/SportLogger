@@ -11,9 +11,11 @@ import {
   View,
 } from "react-native";
 
-const ExerciseCard = ({ exercise }: { exercise: Exercise }) => {
+const ExerciseCard = ({ exercise, index }: { exercise: Exercise, index: number }) => {
   return (
-    <TouchableOpacity className="w-48 h-[145px] bg-gray-100 rounded-2xl mb-5 overflow-hidden items-center">
+    <TouchableOpacity className="w-48 h-[145px] bg-gray-100 rounded-2xl mb-5 overflow-hidden items-center"
+    onPress={() => router.push({ pathname: `/exerciseDetails/[id]`, params: { id: index, description: exercise.description, image: exercise.imageUrl, name: exercise.title } })}
+    >
       <Image
         className="w-full h-28"
         source={
@@ -55,7 +57,7 @@ export default function ExercisesScreen() {
         className="mb-5"
         data={exercisesList}
         keyExtractor={(item, index) => String(index)}
-        renderItem={({ item, index }) => <ExerciseCard exercise={item} />}
+        renderItem={({ item, index }) => <ExerciseCard exercise={item} index={index} />}
         ListEmptyComponent={() => {
           return (
             <View>
