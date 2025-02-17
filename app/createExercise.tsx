@@ -7,8 +7,12 @@ import { useGlobalContext } from "@/context/GlobalProvider";
 import { router } from "expo-router";
 
 export default function CreateExercise() {
-  const { exercisesList, setExercisesList, workoutsList, setWorkoutsList } =
-    useGlobalContext();
+  const {
+    exercisesList,
+    updateExercisesList,
+    workoutsList,
+    updateWorkoutList,
+  } = useGlobalContext();
 
   const [exercise, setExercise] = useState<Exercise>({
     title: "",
@@ -18,7 +22,7 @@ export default function CreateExercise() {
 
   function submitForm() {
     //check if form is empty
-    setExercisesList([...exercisesList, exercise]);
+    updateExercisesList([...exercisesList, exercise]);
     router.back();
   }
 
@@ -41,6 +45,16 @@ export default function CreateExercise() {
         handleChangeText={(e) => setExercise({ ...exercise, description: e })}
         otherStyles={""}
       />
+
+      <FormField
+        title={"URL Zdjęcia"}
+        value={exercise.imageUrl}
+        placeholder={"Wpisz tutaj URL do zdjęcia"}
+        handleChangeText={(e) => setExercise({ ...exercise, imageUrl: e })}
+        otherStyles={""}
+      />
+
+      {/*KATEGORIA*/}
 
       <CustomButton
         title={"Dodaj ćwiczenie"}

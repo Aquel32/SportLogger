@@ -19,7 +19,8 @@ export async function Load(fileName: string) {
   try {
     let fileUri = FileSystem.documentDirectory + fileName;
     const fileInfo = await FileSystem.readAsStringAsync(fileUri);
-    return JSON.parse(fileInfo);
+    const result = JSON.parse(fileInfo);
+    return result;
   } catch (error) {
     console.error(error);
   }

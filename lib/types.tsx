@@ -13,4 +13,5 @@ export type Activity = {
 export type Workout = {
   title: string;
   exercises: Array<Activity>;
+  date: Date;
 };

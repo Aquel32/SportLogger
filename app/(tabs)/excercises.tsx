@@ -4,7 +4,7 @@ import { Exercise } from "@/lib/types";
 import { router } from "expo-router";
 import {
   FlatList,
-  GestureResponderEvent,
+  Image,
   SafeAreaView,
   Text,
   TouchableOpacity,
@@ -12,41 +12,50 @@ import {
 } from "react-native";
 
 const ExerciseCard = ({ exercise }: { exercise: Exercise }) => {
-  const { exercisesList, setExercisesList, workoutsList, setWorkoutsList } =
-    useGlobalContext();
-
-  function deleteExercise(event: GestureResponderEvent) {
-    var array = [...exercisesList]; // make a separate copy of the array
-    var index = array.indexOf(exercise);
-    if (index !== -1) {
-      array.splice(index, 1);
-      setExercisesList(array);
-    }
-  }
-
   return (
-    <View className="w-full flex-row justify-evenly items-center bg-gray-300 p-2 rounded-2xl">
-      <Text>{exercise.title}</Text>
-      <TouchableOpacity
-        className="w-10 h-10 bg-secondary justify-center items-center"
-        onPress={deleteExercise}
-      >
-        <Text className="text-white">U</Text>
-      </TouchableOpacity>
-    </View>
+    <TouchableOpacity className="w-48 h-[145px] bg-gray-100 rounded-2xl mb-5 overflow-hidden items-center">
+      <Image
+        className="w-full h-28"
+        source={
+          exercise.imageUrl
+            ? { uri: exercise.imageUrl }
+            : require("../../assets/images/noimage.png")
+        }
+      />
+
+      <View className="w-[90%]">
+        <Text className="text-2xl text-black font-bold">{exercise.title}</Text>
+        <Text className="text-xs text-black font-bold" numberOfLines={1}>
+          {exercise.description}
+        </Text>
+      </View>
+    </TouchableOpacity>
   );
 };
 
 export default function ExercisesScreen() {
-  const { exercisesList, setExercisesList, workoutsList, setWorkoutsList } =
-    useGlobalContext();
+  const {
+    exercisesList,
+    updateExercisesList,
+    workoutsList,
+    updateWorkoutList,
+  } = useGlobalContext();
+
+  // function deleteExercise(index: number) {
+  //   var array = [...exercisesList]; // make a separate copy of the array
+  //   if (index !== -1) {
+  //     array.splice(index, 1);
+  //     setExercisesList(array);
+  //   }
+  // }
 
   return (
     <SafeAreaView className="bg-primary h-full py-10 items-center">
       <FlatList
+        className="mb-5"
         data={exercisesList}
         keyExtractor={(item, index) => String(index)}
-        renderItem={({ item }) => <ExerciseCard exercise={item} />}
+        renderItem={({ item, index }) => <ExerciseCard exercise={item} />}
         ListEmptyComponent={() => {
           return (
             <View>
@@ -56,6 +65,8 @@ export default function ExercisesScreen() {
             </View>
           );
         }}
+        numColumns={2}
+        columnWrapperClassName="gap-5"
       />
       <CustomButton
         title={"DODAJ NIESTANDARDOWE ĆWICZENIE"}
