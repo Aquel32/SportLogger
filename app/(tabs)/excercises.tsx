@@ -14,7 +14,7 @@ import {
 const ExerciseCard = ({ exercise, index }: { exercise: Exercise, index: number }) => {
   return (
     <TouchableOpacity className="w-48 h-[145px] bg-gray-100 rounded-2xl mb-5 overflow-hidden items-center"
-    onPress={() => router.push({ pathname: `/exerciseDetails/[id]`, params: { id: index, description: exercise.description, image: exercise.imageUrl, name: exercise.title } })}
+    onPress={() => router.push({ pathname: `/exerciseDetails/about/[id]`, params: { id: index} })}
     >
       <Image
         className="w-full h-28"
@@ -27,9 +27,6 @@ const ExerciseCard = ({ exercise, index }: { exercise: Exercise, index: number }
 
       <View className="w-[90%]">
         <Text className="text-2xl text-black font-bold">{exercise.title}</Text>
-        <Text className="text-xs text-black font-bold" numberOfLines={1}>
-          {exercise.description}
-        </Text>
       </View>
     </TouchableOpacity>
   );
