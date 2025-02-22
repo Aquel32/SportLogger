@@ -1,4 +1,5 @@
 import CustomButton from "@/components/CustomButton";
+import { ExerciseCard } from "@/components/ExerciseCard";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { Exercise } from "@/lib/types";
 import { router } from "expo-router";
@@ -10,30 +11,6 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-
-const ExerciseCard = ({ exercise, index }: { exercise: Exercise, index: number }) => {
-  return (
-    <TouchableOpacity className="w-48 h-[145px] bg-gray-100 rounded-2xl mb-5 overflow-hidden items-center"
-    onPress={() => router.push({ pathname: `/exerciseDetails/[id]`, params: { id: index, description: exercise.description, image: exercise.imageUrl, name: exercise.title } })}
-    >
-      <Image
-        className="w-full h-28"
-        source={
-          exercise.imageUrl
-            ? { uri: exercise.imageUrl }
-            : require("../../assets/images/noimage.png")
-        }
-      />
-
-      <View className="w-[90%]">
-        <Text className="text-2xl text-black font-bold">{exercise.title}</Text>
-        <Text className="text-xs text-black font-bold" numberOfLines={1}>
-          {exercise.description}
-        </Text>
-      </View>
-    </TouchableOpacity>
-  );
-};
 
 export default function ExercisesScreen() {
   const {
@@ -57,7 +34,23 @@ export default function ExercisesScreen() {
         className="mb-5"
         data={exercisesList}
         keyExtractor={(item, index) => String(index)}
-        renderItem={({ item, index }) => <ExerciseCard exercise={item} index={index} />}
+        renderItem={({ item, index }) => (
+          <ExerciseCard
+            exercise={item}
+            index={index}
+            onPress={() =>
+              router.push({
+                pathname: `/exerciseDetails/[id]`,
+                params: {
+                  id: index,
+                  description: item.description,
+                  image: item.imageUrl,
+                  name: item.title,
+                },
+              })
+            }
+          />
+        )}
         ListEmptyComponent={() => {
           return (
             <View>

@@ -1,11 +1,13 @@
 import CustomButton from "@/components/CustomButton";
+import { ExerciseCard } from "@/components/ExerciseCard";
 import FormField from "@/components/FormField";
 import { useGlobalContext } from "@/context/GlobalProvider";
-import { Activity, Category, Exercise, Workout } from "@/lib/types";
+import { Activity, Category, Exercise, Set, Workout } from "@/lib/types";
 import { router } from "expo-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   FlatList,
+  GestureResponderEvent,
   SafeAreaView,
   ScrollView,
   Text,
@@ -26,13 +28,34 @@ const ActivityCard = ({
   activity: Activity;
   index: number;
   removeExercise: () => void;
-  updateActivity: (
-    index: number,
-    sets: number,
-    reps: number,
-    weight: number
-  ) => void;
+  updateActivity: (index: number, sets: Array<Set>) => void;
 }) => {
+  function addSet() {
+    const newSet: Set = {
+      reps: 0,
+      weight: 0,
+    };
+
+    var arrayFromActivities = [...activity.sets];
+    arrayFromActivities.push(newSet);
+
+    updateActivity(index, arrayFromActivities);
+  }
+  function removeSet(i: number) {
+    var arrayFromActivities = [...activity.sets];
+    if (i !== -1) {
+      arrayFromActivities.splice(i, 1);
+      updateActivity(index, arrayFromActivities);
+    }
+  }
+
+  function updateSet(i: number, reps: Number, weight: Number) {
+    var arrayFromActivities = [...activity.sets];
+    arrayFromActivities[i].reps = reps;
+    arrayFromActivities[i].weight = weight;
+    updateActivity(index, arrayFromActivities);
+  }
+
   return (
     <View className="bg-gray-500 p-2 my-2 rounded-xl">
       <View className="w-full flex flex-row justify-between pr-3">
@@ -45,50 +68,54 @@ const ActivityCard = ({
         </TouchableOpacity>
       </View>
 
-      <View className="w-full flex flex-row gap-3">
-        <FormField
-          title="Serie"
-          value={String(activity.sets)}
-          handleChangeText={(e: string) =>
-            updateActivity(
-              index,
-              Number(e),
-              Number(activity.reps),
-              Number(activity.weight)
-            )
-          }
-          placeholder={"Serie"}
-          otherStyles={"grow"}
-        />
-        <FormField
-          title="Powtórzenia"
-          value={String(activity.reps)}
-          handleChangeText={(e: string) =>
-            updateActivity(
-              index,
-              Number(activity.sets),
-              Number(e),
-              Number(activity.weight)
-            )
-          }
-          placeholder={"Powtórzenia"}
-          otherStyles={"grow"}
-        />
-        <FormField
-          title="Ciężar"
-          value={String(activity.weight)}
-          handleChangeText={(e: string) =>
-            updateActivity(
-              index,
-              Number(activity.sets),
-              Number(activity.reps),
-              Number(e)
-            )
-          }
-          placeholder={"Ciężar"}
-          otherStyles={"grow"}
-        />
-      </View>
+      <FlatList
+        scrollEnabled={false}
+        className="flex flex-column gap-5"
+        data={activity.sets}
+        renderItem={(item) => (
+          <View className="w-full flex flex-row gap-3">
+            <Text className="self-center">{item.index + 1}</Text>
+            <FormField
+              title="Powtórzenia"
+              value={String(item.item.reps)}
+              handleChangeText={(e: string) =>
+                updateSet(item.index, Number(e), item.item.weight)
+              }
+              placeholder={"Powtórzenia"}
+              otherStyles={"grow"}
+            />
+            <FormField
+              title="Ciężar"
+              value={String(item.item.weight)}
+              handleChangeText={(e: string) => {
+                updateSet(item.index, item.item.reps, Number(e));
+              }}
+              placeholder={"Ciężar"}
+              otherStyles={"grow"}
+            />
+            <TouchableOpacity
+              className="bg-red-300 w-10 h-10 self-center"
+              onPress={() => removeSet(item.index)}
+            >
+              <Text>-</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+        keyExtractor={(item, index) => index.toString()}
+        ListEmptyComponent={() => (
+          <Text className="text-xs text-black font-bold">
+            NIE DODAŁEŚ ŻADNYCH SERII DO ĆWICZENIA
+          </Text>
+        )}
+      />
+
+      <CustomButton
+        title={"DODAJ SERIĘ"}
+        handlePress={addSet}
+        containerStyles={"m-2 bg-slate-400"}
+        textStyles={""}
+        isLoading={false}
+      />
     </View>
   );
 };
@@ -102,17 +129,25 @@ export default function WorkoutScreen() {
     categories: [],
   });
 
-  const [selectedCategories, setSelectedCategories] = useState([]);
+  const [selectedCategories, setSelectedCategories] = useState<Array<string>>(
+    []
+  );
   const [workoutExercises, setWorkoutExercises] = useState<Array<Exercise>>([]);
   const [workoutActivities, setWorkoutActivities] = useState<Array<Activity>>(
     []
   );
 
+  const [addNewExercisePanel, setAddNewExercisePanel] = useState(false);
+
   function submitForm() {
     //check if form is empty
     updateWorkoutList([
       ...workoutsList,
-      { ...workout, categories: selectedCategories },
+      {
+        ...workout,
+        categories: selectedCategories,
+        exercises: workoutActivities,
+      },
     ]);
 
     setWorkout({
@@ -124,12 +159,8 @@ export default function WorkoutScreen() {
     // router push to workout details
   }
 
-  const categoriesData: Array<{ key: string; value: string }> = [];
-  Object.values(Category).forEach((name) =>
-    categoriesData.push({ key: String(name), value: String(name) })
-  );
-
   const exercisesData: Array<{ key: Exercise; value: string }> = [];
+
   exercisesList.forEach((exercise) =>
     exercisesData.push({
       key: exercise,
@@ -141,12 +172,11 @@ export default function WorkoutScreen() {
     if (workoutExercises.indexOf(selectedExercise) != -1) return;
 
     setWorkoutExercises([...workoutExercises, selectedExercise]);
+    setSelectedCategories([...selectedCategories, selectedExercise.category]);
 
     const newActivity: Activity = {
       exercise: selectedExercise,
-      reps: 0,
-      sets: 0,
-      weight: 0,
+      sets: [],
     };
 
     setWorkoutActivities([...workoutActivities, newActivity]);
@@ -155,25 +185,21 @@ export default function WorkoutScreen() {
   function removeExercise(index: number) {
     var arrayFromActivities = [...workoutActivities];
     var arrayFromExercises = [...workoutExercises];
+    var arrayFromCategories = [...selectedCategories];
     if (index !== -1) {
       arrayFromActivities.splice(index, 1);
       arrayFromExercises.splice(index, 1);
+      arrayFromCategories.splice(index, 1);
       setWorkoutActivities(arrayFromActivities);
       setWorkoutExercises(arrayFromExercises);
+      setSelectedCategories(arrayFromCategories);
     }
   }
 
-  function updateActivity(
-    index: number,
-    sets: number,
-    reps: number,
-    weight: number
-  ) {
+  function updateActivity(index: number, sets: Array<Set>) {
     if (index !== -1) {
       var arrayFromActivities = [...workoutActivities];
       arrayFromActivities[index].sets = sets;
-      arrayFromActivities[index].reps = reps;
-      arrayFromActivities[index].weight = weight;
 
       setWorkoutActivities(arrayFromActivities);
     }
@@ -181,80 +207,110 @@ export default function WorkoutScreen() {
 
   return (
     <SafeAreaView className="bg-primary h-full">
-      <ScrollView
-        className="flex flex-column w-full h-full"
-        contentContainerStyle={{ alignItems: "center" }}
-      >
-        <Text className="text-slate-500 font-bold mt-5">NOWY TRENING</Text>
-
-        <View className="w-[70%]">
-          <Text className="text-white mt-5">TEMPLATE</Text>
-          <View className="flex flex-row items-center justify-between">
-            <SelectList
-              setSelected={addNewExercise}
-              data={exercisesData}
-              save="key"
-            />
-            <TouchableOpacity className="w-[auto] bg-green-500 p-2 rounded-xl">
-              <Text>NOWY TEMPLATE</Text>
+      {addNewExercisePanel && (
+        <View className="w-full h-full items-center my-5 gap-5 bg-gray-500 rounded-xl">
+          <View className="w-[80%] items-end">
+            <TouchableOpacity
+              className="p-2 bg-red-300"
+              onPress={() => setAddNewExercisePanel(false)}
+            >
+              <Text>AA</Text>
             </TouchableOpacity>
           </View>
-        </View>
 
-        <View className="w-[70%]">
-          <Text className="text-white mt-5">ĆWICZENIA</Text>
           <FlatList
-            className="flex flex-column gap-5"
-            data={workoutActivities}
-            renderItem={(item) => (
-              <ActivityCard
-                activity={item.item}
-                index={item.index}
-                removeExercise={() => removeExercise(item.index)}
-                updateActivity={updateActivity}
+            className="mb-5"
+            data={exercisesList}
+            keyExtractor={(item, index) => String(index)}
+            renderItem={({ item, index }) => (
+              <ExerciseCard
+                exercise={item}
+                index={index}
+                onPress={() => {
+                  addNewExercise(item);
+                  setAddNewExercisePanel(false);
+                }}
               />
             )}
-            keyExtractor={(item, index) => index.toString()}
+            ListEmptyComponent={() => {
+              return (
+                <View>
+                  <Text className="text-gray-100 font-bold">
+                    LISTA ĆWICZEŃ JEST PUSTA
+                  </Text>
+                </View>
+              );
+            }}
+            numColumns={2}
+            columnWrapperClassName="gap-5"
           />
         </View>
+      )}
 
-        <View className="w-[70%]">
-          <Text className="text-white mt-5">DODAJ ĆWICZENIE</Text>
-          <SelectList
-            setSelected={addNewExercise}
-            data={exercisesData}
-            save="key"
-          />
-        </View>
+      <FlatList
+        data={[]}
+        renderItem={(item) => <></>}
+        keyExtractor={(item, index) => String(index)}
+        nestedScrollEnabled={true}
+        ListHeaderComponent={
+          <View className="w-full items-center">
+            <Text className="text-slate-500 font-bold mt-5">NOWY TRENING</Text>
 
-        <View className="w-[70%]">
-          <Text className="text-white mt-5">WYBIERZ PARTIĘ</Text>
-          <MultipleSelectList
-            setSelected={setSelectedCategories}
-            data={categoriesData}
-            save="value"
-            label="Kategorie"
-            search={true}
-            dropdownShown={false}
-            placeholder="Wybierz partie"
-            searchPlaceholder="Wyszukaj partię"
-            notFoundText="Żadna partia nie pasuje do wpisanej nazwy"
-            dropdownTextStyles={{ color: "white" }}
-            inputStyles={{ color: "white" }}
-            labelStyles={{ color: "white" }}
-            disabledTextStyles={{ color: "white" }}
-            checkBoxStyles={{ backgroundColor: "#f0f0f0" }}
-          />
-        </View>
+            {/* <View className="w-[70%]">
+            <Text className="text-white mt-5">TEMPLATE</Text>
+            <View className="flex flex-row items-center justify-between">
+              <SelectList
+                setSelected={addNewExercise}
+                data={exercisesData}
+                save="key"
+              />
+              <TouchableOpacity className="w-[auto] bg-green-500 p-2 rounded-xl">
+                <Text>NOWY TEMPLATE</Text>
+              </TouchableOpacity>
+            </View>
+          </View> */}
 
-        <CustomButton
-          title={"DODAJ TRENING"}
-          handlePress={submitForm}
-          containerStyles={"bg-slate-400 px-5 my-5"}
-          textStyles={""}
-          isLoading={false}
-        />
-      </ScrollView>
+            <View className="w-[70%]">
+              <Text className="text-white mt-5">ĆWICZENIA</Text>
+              <FlatList
+                scrollEnabled={false}
+                className="flex flex-column gap-5"
+                data={workoutActivities}
+                renderItem={(item) => (
+                  <ActivityCard
+                    activity={item.item}
+                    index={item.index}
+                    removeExercise={() => removeExercise(item.index)}
+                    updateActivity={updateActivity}
+                  />
+                )}
+                ListEmptyComponent={() => (
+                  <Text className="text-xs text-slate-500 font-bold">
+                    NIE DODAŁEŚ ŻADNYCH ĆWICZEŃ DO TRENINGU
+                  </Text>
+                )}
+                keyExtractor={(item, index) => index.toString()}
+              />
+            </View>
+
+            <CustomButton
+              title={"DODAJ ĆWICZENIE"}
+              handlePress={() => setAddNewExercisePanel(true)}
+              containerStyles={"bg-slate-400 px-5 my-5"}
+              textStyles={""}
+              isLoading={false}
+            />
+
+            <CustomButton
+              title={"DODAJ TRENING"}
+              handlePress={submitForm}
+              containerStyles={"bg-slate-400 px-5 my-5"}
+              textStyles={""}
+              isLoading={false}
+            />
+          </View>
+        }
+      />
     </SafeAreaView>
   );
 }

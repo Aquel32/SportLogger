@@ -2,11 +2,15 @@ export type Exercise = {
   title: string;
   description: string;
   imageUrl: string;
+  category: Category;
 };
 
 export type Activity = {
   exercise: Exercise;
-  sets: Number;
+  sets: Array<Set>;
+};
+
+export type Set = {
   reps: Number;
   weight: Number;
 };
@@ -18,6 +22,7 @@ export type Workout = {
 };
 
 export enum Category {
+  "Brak" = "",
   "Barki" = "Barki",
   "Biceps" = "Biceps",
   "Triceps" = "Triceps",
@@ -25,4 +30,5 @@ export enum Category {
   "Klata" = "Klata",
   "Brzuch" = "Brzuch",
   "Nogi" = "Nogi",
+  "Plecy" = "Plecy",
 }

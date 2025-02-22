@@ -33,6 +33,7 @@ const WorkoutCard = ({ workout }: { workout: Workout }) => {
     <TouchableOpacity
       className="w-48 h-[145px] bg-gray-100 rounded-2xl mb-5 overflow-hidden items-center"
       onPress={() => deleteExercise(workoutsList.indexOf(workout))}
+      //onPress={() => print()}
     >
       <View className="w-[90%]">
         <Text className="text-2xl text-black font-bold">
