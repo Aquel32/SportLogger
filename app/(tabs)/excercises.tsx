@@ -12,39 +12,6 @@ import {
   View,
 } from "react-native";
 
-const ExerciseCard = ({
-  exercise,
-  index,
-}: {
-  exercise: Exercise;
-  index: number;
-}) => {
-  return (
-    <TouchableOpacity
-      className="w-48 h-[145px] bg-gray-100 rounded-2xl mb-5 overflow-hidden items-center"
-      onPress={() =>
-        router.push({
-          pathname: `/exerciseDetails/about/[id]`,
-          params: { id: index },
-        })
-      }
-    >
-      <Image
-        className="w-full h-28"
-        source={
-          exercise.imageUrl
-            ? { uri: exercise.imageUrl }
-            : require("../../assets/images/noimage.png")
-        }
-      />
-
-      <View className="w-[90%]">
-        <Text className="text-2xl text-black font-bold">{exercise.title}</Text>
-      </View>
-    </TouchableOpacity>
-  );
-};
-
 export default function ExercisesScreen() {
   const {
     exercisesList,
