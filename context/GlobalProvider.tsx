@@ -14,6 +14,8 @@ interface ContextType {
   updateExercisesList: (data: Array<Exercise>) => void;
   workoutsList: Array<Workout>;
   updateWorkoutList: (data: Array<Workout>) => void;
+  templateList: Array<Workout>;
+  updateTemplateList: (data: Array<Workout>) => void;
 }
 
 const GlobalContext = createContext<ContextType>({
@@ -21,6 +23,8 @@ const GlobalContext = createContext<ContextType>({
   updateExercisesList: () => {},
   workoutsList: [],
   updateWorkoutList: () => {},
+  templateList: [],
+  updateTemplateList: () => {},
 });
 
 export const useGlobalContext = () => useContext(GlobalContext);
@@ -28,6 +32,7 @@ export const useGlobalContext = () => useContext(GlobalContext);
 const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
   const [exercisesList, setExercisesList] = useState<Array<Exercise>>([]);
   const [workoutsList, setWorkoutsList] = useState<Array<Workout>>([]);
+  const [templateList, setTemplateList] = useState<Array<Workout>>([]);
 
   function updateExercisesList(data: Array<Exercise>) {
     setExercisesList(data);
@@ -39,6 +44,11 @@ const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
     Save("workouts.txt", data);
   }
 
+  function updateTemplateList(data: Array<Workout>) {
+    setTemplateList(data);
+    Save("templates.txt", data);
+  }
+
   useEffect(() => {
     async function loadDataOnStart() {
       if (await DoesFileExist("exercises.txt")) {
@@ -48,6 +58,10 @@ const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
       if (await DoesFileExist("workouts.txt")) {
         const loadedWorkouts = await Load("workouts.txt");
         setWorkoutsList(loadedWorkouts ? loadedWorkouts : []);
+      }
+      if (await DoesFileExist("templates.txt")) {
+        const loadedTemplates = await Load("templates.txt");
+        setTemplateList(loadedTemplates ? loadedTemplates : []);
       }
     }
 
@@ -61,6 +75,8 @@ const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
         updateExercisesList,
         workoutsList,
         updateWorkoutList,
+        templateList,
+        updateTemplateList,
       }}
     >
       {children}
