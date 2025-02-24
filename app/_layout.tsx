@@ -13,6 +13,26 @@ export default function RootLayout() {
       >
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
         <Stack.Screen
+          name="exerciseDetails/about/[id]"
+          options={{ title: "Szczegóły ćwiczenia" }}
+        />
+        <Stack.Screen
+          name="exerciseDetails/charts/[id]"
+          options={{ title: "Wykresy" }}
+        />
+        <Stack.Screen
+          name="exerciseDetails/history/[id]"
+          options={{ title: "Historia" }}
+        />
+        <Stack.Screen
+          name="exerciseDetails/records/[id]"
+          options={{ title: "Rekordy" }}
+        />
+        <Stack.Screen
+          name="trainingDetails/[id]"
+          options={{ title: "Trening" }}
+        />
+        <Stack.Screen
           name="settings"
           options={{
             title: "Ustawienia",

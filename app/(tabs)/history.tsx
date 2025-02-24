@@ -19,23 +19,21 @@ const WorkoutCard = ({ workout }: { workout: Workout }) => {
     updateWorkoutList,
   } = useGlobalContext();
 
-  function deleteExercise(index: number) {
-    var array = [...workoutsList]; // make a separate copy of the array
-    if (index !== -1) {
-      array.splice(index, 1);
-      updateWorkoutList(array);
-    }
-  }
-
   const date = new Date(workout.date);
 
   return (
     <TouchableOpacity
-      className="w-48 h-[145px] bg-gray-100 rounded-2xl mb-5 overflow-hidden items-center"
-      onPress={() => deleteExercise(workoutsList.indexOf(workout))}
+      className="w-[300px] h-[100px] bg-gray-100 rounded-2xl mb-5 p-2 overflow-hidden items-center"
+      //onPress={() => deleteExercise(workoutsList.indexOf(workout))}
+      onPress={() =>
+        router.push({
+          pathname: `/trainingDetails/[id]`,
+          params: { id: workoutsList.indexOf(workout) },
+        })
+      }
       //onPress={() => print()}
     >
-      <View className="w-[90%]">
+      <View className="w-[90%] flex-row justify-between">
         <Text className="text-2xl text-black font-bold">
           {date.getDate() +
             "." +
@@ -51,6 +49,17 @@ const WorkoutCard = ({ workout }: { workout: Workout }) => {
             <Text className="bg-red-100 rounded-xl p-1">{element.item}</Text>
           )}
         />
+      </View>
+
+      <View className="w-[90%]">
+        {workout.exercises.map((activity, index) => {
+          if (index > 2) return;
+          return (
+            <View className="flex-row gap-5">
+              <Text className="text-black ">{activity.exercise.title}</Text>
+            </View>
+          );
+        })}
       </View>
     </TouchableOpacity>
   );
@@ -80,8 +89,6 @@ export default function HistoryScreen() {
             </View>
           );
         }}
-        numColumns={2}
-        columnWrapperClassName="gap-5"
       />
     </SafeAreaView>
   );

@@ -1,10 +1,11 @@
+import ActivitiesList from "@/components/ActivitiesList";
 import CustomButton from "@/components/CustomButton";
 import { ExerciseCard } from "@/components/ExerciseCard";
 import FormField from "@/components/FormField";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { Activity, Category, Exercise, Set, Workout } from "@/lib/types";
 import { router } from "expo-router";
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import {
   FlatList,
   GestureResponderEvent,
@@ -18,107 +19,7 @@ import {
   MultipleSelectList,
   SelectList,
 } from "react-native-dropdown-select-list";
-
-const ActivityCard = ({
-  activity,
-  index,
-  removeExercise,
-  updateActivity,
-}: {
-  activity: Activity;
-  index: number;
-  removeExercise: () => void;
-  updateActivity: (index: number, sets: Array<Set>) => void;
-}) => {
-  function addSet() {
-    const newSet: Set = {
-      reps: 0,
-      weight: 0,
-    };
-
-    var arrayFromActivities = [...activity.sets];
-    arrayFromActivities.push(newSet);
-
-    updateActivity(index, arrayFromActivities);
-  }
-  function removeSet(i: number) {
-    var arrayFromActivities = [...activity.sets];
-    if (i !== -1) {
-      arrayFromActivities.splice(i, 1);
-      updateActivity(index, arrayFromActivities);
-    }
-  }
-
-  function updateSet(i: number, reps: Number, weight: Number) {
-    var arrayFromActivities = [...activity.sets];
-    arrayFromActivities[i].reps = reps;
-    arrayFromActivities[i].weight = weight;
-    updateActivity(index, arrayFromActivities);
-  }
-
-  return (
-    <View className="bg-gray-500 p-2 my-2 rounded-xl">
-      <View className="w-full flex flex-row justify-between pr-3">
-        <Text className="">{activity.exercise.title}</Text>
-        <TouchableOpacity
-          className="bg-red-300 px-1 flex justify-center items-center"
-          onPress={() => removeExercise()}
-        >
-          <Text>X</Text>
-        </TouchableOpacity>
-      </View>
-
-      <FlatList
-        scrollEnabled={false}
-        className="flex flex-column gap-5"
-        data={activity.sets}
-        renderItem={(item) => (
-          <View className="w-full flex flex-row gap-3">
-            <Text className="self-center">{item.index + 1}</Text>
-            <FormField
-              title="Powtórzenia"
-              value={String(item.item.reps)}
-              handleChangeText={(e: string) =>
-                updateSet(item.index, Number(e), item.item.weight)
-              }
-              placeholder={"Powtórzenia"}
-              otherStyles={"grow"}
-            />
-            <FormField
-              title="Ciężar"
-              value={String(item.item.weight)}
-              handleChangeText={(e: string) => {
-                updateSet(item.index, item.item.reps, Number(e));
-              }}
-              placeholder={"Ciężar"}
-              otherStyles={"grow"}
-            />
-            <TouchableOpacity
-              className="bg-red-300 w-10 h-10 self-center"
-              onPress={() => removeSet(item.index)}
-            >
-              <Text>-</Text>
-            </TouchableOpacity>
-          </View>
-        )}
-        keyExtractor={(item, index) => index.toString()}
-        ListEmptyComponent={() => (
-          <Text className="text-xs text-black font-bold">
-            NIE DODAŁEŚ ŻADNYCH SERII DO ĆWICZENIA
-          </Text>
-        )}
-      />
-
-      <CustomButton
-        title={"DODAJ SERIĘ"}
-        handlePress={addSet}
-        containerStyles={"m-2 bg-slate-400"}
-        textStyles={""}
-        isLoading={false}
-      />
-    </View>
-  );
-};
+import SelectExercise from "./selectExercise";
 
 export default function WorkoutScreen() {
   const {
@@ -154,13 +55,20 @@ export default function WorkoutScreen() {
       },
     ]);
 
+    setSelfTemplate(-100);
+
     setWorkout({
       exercises: [],
       date: new Date(),
       categories: [],
     });
+    setWorkoutActivities([]);
     setSelectedCategories([]);
     // router push to workout details
+    router.replace({
+      pathname: "/trainingDetails/[id]",
+      params: { id: workoutsList.length },
+    });
   }
 
   const exercisesData: Array<{ key: Exercise; value: string }> = [];
@@ -252,45 +160,11 @@ export default function WorkoutScreen() {
 
   return (
     <SafeAreaView className="bg-primary h-full">
-      {addExercisePanel && (
-        <View className="w-full h-full items-center my-5 gap-5 bg-gray-500 rounded-xl">
-          <View className="w-[80%] items-end">
-            <TouchableOpacity
-              className="p-2 bg-red-300"
-              onPress={() => setNewExercisePanel(false)}
-            >
-              <Text>AA</Text>
-            </TouchableOpacity>
-          </View>
-
-          <FlatList
-            className="mb-5"
-            data={exercisesList}
-            keyExtractor={(item, index) => String(index)}
-            renderItem={({ item, index }) => (
-              <ExerciseCard
-                exercise={item}
-                index={index}
-                onPress={() => {
-                  addNewExercise(item);
-                  setNewExercisePanel(false);
-                }}
-              />
-            )}
-            ListEmptyComponent={() => {
-              return (
-                <View>
-                  <Text className="text-gray-100 font-bold">
-                    LISTA ĆWICZEŃ JEST PUSTA
-                  </Text>
-                </View>
-              );
-            }}
-            numColumns={2}
-            columnWrapperClassName="gap-5"
-          />
-        </View>
-      )}
+      <SelectExercise
+        show={addExercisePanel}
+        setShow={setNewExercisePanel}
+        addNewExercise={addNewExercise}
+      />
 
       <FlatList
         data={[]}
@@ -380,24 +254,11 @@ export default function WorkoutScreen() {
 
             <View className="w-[70%]">
               <Text className="text-white mt-5">ĆWICZENIA</Text>
-              <FlatList
-                scrollEnabled={false}
-                className="flex flex-column gap-5"
-                data={workoutActivities}
-                renderItem={(item) => (
-                  <ActivityCard
-                    activity={item.item}
-                    index={item.index}
-                    removeExercise={() => removeExercise(item.index)}
-                    updateActivity={updateActivity}
-                  />
-                )}
-                ListEmptyComponent={() => (
-                  <Text className="text-xs text-slate-500 font-bold">
-                    NIE DODAŁEŚ ŻADNYCH ĆWICZEŃ DO TRENINGU
-                  </Text>
-                )}
-                keyExtractor={(item, index) => index.toString()}
+              <ActivitiesList
+                workoutActivities={workoutActivities}
+                removeExercise={removeExercise}
+                updateActivity={updateActivity}
+                edit={true}
               />
             </View>
 
