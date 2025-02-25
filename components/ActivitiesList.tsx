@@ -1,6 +1,6 @@
 import { View, Text, FlatList, TouchableOpacity } from "react-native";
 import React from "react";
-import { Activity, Set } from "@/lib/types";
+import { Activity, Exercise, Set, Workout } from "@/lib/types";
 import CustomButton from "./CustomButton";
 import FormField from "./FormField";
 
@@ -114,21 +114,42 @@ const ActivityCard = ({
 };
 
 const ActivitiesList = ({
-  workoutActivities,
-  removeExercise,
-  updateActivity,
+  workout,
+  setWorkout,
   edit,
 }: {
-  workoutActivities: Array<Activity>;
-  removeExercise: (i: number) => void;
-  updateActivity: (i: number, sets: Array<Set>) => void;
+  workout: Workout;
+  setWorkout: (newWorkout: Workout) => void;
   edit: boolean;
 }) => {
+  function removeExercise(index: number) {
+    var arrayFromActivities = [...workout.exercises];
+    var arrayFromCategories = [...workout.categories];
+    if (index !== -1) {
+      arrayFromActivities.splice(index, 1);
+      arrayFromCategories.splice(index, 1);
+      setWorkout({
+        ...workout,
+        exercises: arrayFromActivities,
+        categories: arrayFromCategories,
+      });
+      //removeSelfTemplate();
+    }
+  }
+
+  function updateActivity(index: number, sets: Array<Set>) {
+    if (index !== -1) {
+      var arrayFromActivities = [...workout.exercises];
+      arrayFromActivities[index].sets = sets;
+      setWorkout({ ...workout, exercises: arrayFromActivities });
+    }
+  }
+
   return (
     <FlatList
       scrollEnabled={false}
       className="flex flex-column gap-5"
-      data={workoutActivities}
+      data={workout.exercises}
       renderItem={(item) => (
         <ActivityCard
           activity={item.item}

@@ -19,7 +19,7 @@ import {
   MultipleSelectList,
   SelectList,
 } from "react-native-dropdown-select-list";
-import SelectExercise from "./selectExercise";
+import SelectExercise from "../../components/selectExercise";
 
 export default function WorkoutScreen() {
   const {
@@ -36,133 +36,80 @@ export default function WorkoutScreen() {
     categories: [],
   });
 
-  const [selectedCategories, setSelectedCategories] = useState<Array<string>>(
-    []
-  );
-  const [workoutActivities, setWorkoutActivities] = useState<Array<Activity>>(
-    []
-  );
-  const [addExercisePanel, setNewExercisePanel] = useState(false);
+  const [showExercisePanel, setShowExercisePanel] = useState(false);
 
   function submitForm() {
     //check if form is empty
-    updateWorkoutList([
-      ...workoutsList,
-      {
-        ...workout,
-        categories: selectedCategories,
-        exercises: workoutActivities,
-      },
-    ]);
+    updateWorkoutList([...workoutsList, workout]);
 
-    setSelfTemplate(-100);
+    //setSelfTemplate(-100);
 
     setWorkout({
       exercises: [],
       date: new Date(),
       categories: [],
     });
-    setWorkoutActivities([]);
-    setSelectedCategories([]);
-    // router push to workout details
-    router.replace({
+
+    router.replace("/history");
+    router.push({
       pathname: "/trainingDetails/[id]",
       params: { id: workoutsList.length },
     });
   }
 
-  const exercisesData: Array<{ key: Exercise; value: string }> = [];
-
-  exercisesList.forEach((exercise) =>
-    exercisesData.push({
-      key: exercise,
-      value: String(exercise.title),
-    })
-  );
-
   function addNewExercise(selectedExercise: Exercise) {
     if (
-      workoutActivities
+      workout.exercises
         .map((activity) => activity.exercise)
         .indexOf(selectedExercise) != -1
     )
       return;
-
-    setSelectedCategories([...selectedCategories, selectedExercise.category]);
 
     const newActivity: Activity = {
       exercise: selectedExercise,
       sets: [],
     };
 
-    setWorkoutActivities([...workoutActivities, newActivity]);
-    removeSelfTemplate();
+    setWorkout({
+      ...workout,
+      categories: [...workout.categories, selectedExercise.category],
+      exercises: [...workout.exercises, newActivity],
+    });
+
+    //removeSelfTemplate();
   }
 
-  function removeExercise(index: number) {
-    var arrayFromActivities = [...workoutActivities];
-    var arrayFromCategories = [...selectedCategories];
-    if (index !== -1) {
-      arrayFromActivities.splice(index, 1);
-      arrayFromCategories.splice(index, 1);
-      setWorkoutActivities(arrayFromActivities);
-      setSelectedCategories(arrayFromCategories);
-      removeSelfTemplate();
-    }
-  }
+  // const [selfTemplate, setSelfTemplate] = useState(-100);
 
-  function updateActivity(index: number, sets: Array<Set>) {
-    if (index !== -1) {
-      var arrayFromActivities = [...workoutActivities];
-      arrayFromActivities[index].sets = sets;
+  // function saveAsTemplate() {
+  //   if (selfTemplate != -100) return;
+  //   updateTemplateList([...templateList, workout]);
+  //   setSelfTemplate(templateList.length - 1);
+  // }
 
-      setWorkoutActivities(arrayFromActivities);
-      removeSelfTemplate();
-    }
-  }
+  // function removeSelfTemplate() {
+  //   if (selfTemplate == -100) return;
 
-  const [selfTemplate, setSelfTemplate] = useState(-100);
+  //   removeTemplate(selfTemplate);
+  //   setSelfTemplate(-100);
+  // }
 
-  function saveAsTemplate() {
-    if (selfTemplate != -100) return;
+  // function removeTemplate(index: number) {
+  //   var array = [...templateList];
+  //   array.splice(index, 1);
+  //   updateTemplateList(array);
+  // }
 
-    updateTemplateList([
-      ...templateList,
-      {
-        ...workout,
-        categories: selectedCategories,
-        exercises: workoutActivities,
-      },
-    ]);
-
-    setSelfTemplate(templateList.length - 1);
-  }
-
-  function removeSelfTemplate() {
-    if (selfTemplate == -100) return;
-
-    removeTemplate(selfTemplate);
-    setSelfTemplate(-100);
-  }
-
-  function removeTemplate(index: number) {
-    var array = [...templateList];
-    array.splice(index, 1);
-    updateTemplateList(array);
-  }
-
-  function applyTemplate(template: Workout) {
-    removeSelfTemplate();
-    setWorkout(template);
-    setSelectedCategories(template.categories);
-    setWorkoutActivities(template.exercises);
-  }
+  // function applyTemplate(template: Workout) {
+  //   removeSelfTemplate();
+  //   setWorkout(template);
+  // }
 
   return (
     <SafeAreaView className="bg-primary h-full">
       <SelectExercise
-        show={addExercisePanel}
-        setShow={setNewExercisePanel}
+        show={showExercisePanel}
+        setShow={setShowExercisePanel}
         addNewExercise={addNewExercise}
       />
 
@@ -175,7 +122,7 @@ export default function WorkoutScreen() {
           <View className="w-full items-center">
             <Text className="text-slate-500 font-bold mt-5">NOWY TRENING</Text>
 
-            <View className="w-[70%]">
+            {/* <View className="w-[70%]">
               <Text className="text-white mt-5">TEMPLATE</Text>
 
               <View className="flex flex-row justify-between">
@@ -199,8 +146,6 @@ export default function WorkoutScreen() {
                       date: new Date(),
                       categories: [],
                     });
-                    setWorkoutActivities([]);
-                    setSelectedCategories([]);
                     removeSelfTemplate();
                   }}
                   containerStyles={"bg-slate-400 px-5 my-5"}
@@ -250,21 +195,20 @@ export default function WorkoutScreen() {
                 keyExtractor={(item, index) => index.toString()}
                 horizontal
               />
-            </View>
+            </View> */}
 
             <View className="w-[70%]">
               <Text className="text-white mt-5">ĆWICZENIA</Text>
               <ActivitiesList
-                workoutActivities={workoutActivities}
-                removeExercise={removeExercise}
-                updateActivity={updateActivity}
+                workout={workout}
+                setWorkout={setWorkout}
                 edit={true}
               />
             </View>
 
             <CustomButton
               title={"DODAJ ĆWICZENIE"}
-              handlePress={() => setNewExercisePanel(true)}
+              handlePress={() => setShowExercisePanel(true)}
               containerStyles={"bg-slate-400 px-5 my-5"}
               textStyles={""}
               isLoading={false}

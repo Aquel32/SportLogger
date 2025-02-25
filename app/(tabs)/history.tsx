@@ -55,7 +55,7 @@ const WorkoutCard = ({ workout }: { workout: Workout }) => {
         {workout.exercises.map((activity, index) => {
           if (index > 2) return;
           return (
-            <View className="flex-row gap-5">
+            <View className="flex-row gap-5" key={index}>
               <Text className="text-black ">{activity.exercise.title}</Text>
             </View>
           );
