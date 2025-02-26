@@ -11,9 +11,8 @@ export default function ExerciseNavigation({ index }: { index: number }) {
             params: { id: index },
           })
         }
-        className="text-white text-lg font-semibold"
       >
-        <Text>ABOUT</Text>
+        <Text className="text-white">ABOUT</Text>
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() =>
@@ -22,9 +21,8 @@ export default function ExerciseNavigation({ index }: { index: number }) {
             params: { id: index },
           })
         }
-        className="text-white text-lg font-semibold"
       >
-        <Text>HISTORY</Text>
+        <Text className="text-white">HISTORY</Text>
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() =>
@@ -33,9 +31,8 @@ export default function ExerciseNavigation({ index }: { index: number }) {
             params: { id: index },
           })
         }
-        className="text-white text-lg font-semibold"
       >
-        <Text>CHARTS</Text>
+        <Text className="text-white">CHARTS</Text>
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() =>
@@ -44,9 +41,8 @@ export default function ExerciseNavigation({ index }: { index: number }) {
             params: { id: index },
           })
         }
-        className="text-white text-lg font-semibold"
       >
-        <Text>RECORDS</Text>
+        <Text className="text-white">RECORDS</Text>
       </TouchableOpacity>
     </View>
   );
