@@ -70,13 +70,13 @@ export default function WorkoutScreen() {
   function addNewExercise(selectedExercise: Exercise) {
     if (
       workout.exercises
-        .map((activity) => activity.exercise)
+        .map((activity) => exercisesList[activity.exerciseIndex])
         .indexOf(selectedExercise) != -1
     )
       return;
 
     const newActivity: Activity = {
-      exercise: selectedExercise,
+      exerciseIndex: exercisesList.indexOf(selectedExercise),
       sets: [],
     };
 
@@ -150,11 +150,12 @@ export default function WorkoutScreen() {
                       (activity, index) =>
                         index < 3 && (
                           <Text
-                            key={activity.exercise.title}
+                            key={exercisesList[activity.exerciseIndex].title}
                             className="text-xs"
                             numberOfLines={1}
                           >
-                            {activity.exercise.title} x {activity.sets.length}
+                            {exercisesList[activity.exerciseIndex].title} x{" "}
+                            {activity.sets.length}
                           </Text>
                         )
                     )}

@@ -11,7 +11,7 @@ import {
   View,
 } from "react-native";
 
-const WorkoutCard = ({ workout }: { workout: Workout }) => {
+export const WorkoutCard = ({ workout }: { workout: Workout }) => {
   const {
     exercisesList,
     updateExercisesList,
@@ -56,7 +56,9 @@ const WorkoutCard = ({ workout }: { workout: Workout }) => {
           if (index > 2) return;
           return (
             <View className="flex-row gap-5" key={index}>
-              <Text className="text-black ">{activity.exercise.title}</Text>
+              <Text className="text-black ">
+                {exercisesList[activity.exerciseIndex].title}
+              </Text>
             </View>
           );
         })}

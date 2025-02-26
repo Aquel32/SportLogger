@@ -3,8 +3,9 @@ import React from "react";
 import { Activity, Exercise, Set, Workout } from "@/lib/types";
 import CustomButton from "./CustomButton";
 import FormField from "./FormField";
+import { useGlobalContext } from "@/context/GlobalProvider";
 
-const ActivityCard = ({
+export const ActivityCard = ({
   activity,
   index,
   removeExercise,
@@ -17,6 +18,8 @@ const ActivityCard = ({
   updateActivity: (index: number, sets: Array<Set>) => void;
   edit: boolean;
 }) => {
+  const { exercisesList } = useGlobalContext();
+
   function addSet() {
     const newSet: Set = {
       reps: 0,
@@ -46,7 +49,7 @@ const ActivityCard = ({
   return (
     <View className="bg-gray-500 p-2 my-2 rounded-xl">
       <View className="w-full flex flex-row justify-between pr-3">
-        <Text className="">{activity.exercise.title}</Text>
+        <Text className="">{exercisesList[activity.exerciseIndex].title}</Text>
         {edit && (
           <TouchableOpacity
             className="bg-red-300 px-1 flex justify-center items-center"
@@ -67,9 +70,11 @@ const ActivityCard = ({
             <FormField
               title="Powtórzenia"
               value={String(item.item.reps)}
-              handleChangeText={(e: string) =>
-                updateSet(item.index, Number(e), item.item.weight)
-              }
+              handleChangeText={(e: string) => {
+                if (edit === true) {
+                  updateSet(item.index, Number(e), item.item.weight);
+                }
+              }}
               placeholder={"Powtórzenia"}
               otherStyles={"grow"}
             />
@@ -77,7 +82,9 @@ const ActivityCard = ({
               title="Ciężar"
               value={String(item.item.weight)}
               handleChangeText={(e: string) => {
-                updateSet(item.index, item.item.reps, Number(e));
+                if (edit === true) {
+                  updateSet(item.index, item.item.reps, Number(e));
+                }
               }}
               placeholder={"Ciężar"}
               otherStyles={"grow"}

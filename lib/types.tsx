@@ -6,7 +6,7 @@ export type Exercise = {
 };
 
 export type Activity = {
-  exercise: Exercise;
+  exerciseIndex: number;
   sets: Array<Set>;
 };
 

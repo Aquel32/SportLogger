@@ -34,13 +34,13 @@ const TrainingDetails = () => {
   function addNewExercise(selectedExercise: Exercise) {
     if (
       workout.exercises
-        .map((activity) => activity.exercise)
+        .map((activity) => exercisesList[activity.exerciseIndex])
         .indexOf(selectedExercise) != -1
     )
       return;
 
     const newActivity: Activity = {
-      exercise: selectedExercise,
+      exerciseIndex: exercisesList.indexOf(selectedExercise),
       sets: [],
     };
 
