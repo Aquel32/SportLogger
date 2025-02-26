@@ -74,7 +74,7 @@ export default function HistoryScreen() {
   } = useGlobalContext();
 
   return (
-    <SafeAreaView className="bg-primary h-full py-10 items-center">
+    <SafeAreaView className="bg-background h-full py-10 items-center">
       <FlatList
         className="mb-5"
         data={workoutsList}

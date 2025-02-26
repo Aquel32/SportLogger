@@ -36,7 +36,7 @@ export default function CreateExercise() {
   });
 
   return (
-    <SafeAreaView className="bg-primary h-full py-10 items-center gap-5">
+    <SafeAreaView className="bg-background h-full py-10 items-center gap-5">
       <Text className="text-slate-500 font-bold">NOWE ĆWICZENIE</Text>
 
       <View className="w-[70%] gap-5">

@@ -29,7 +29,7 @@ export default function ExercisesScreen() {
   // }
 
   return (
-    <SafeAreaView className="bg-primary h-full py-10 items-center">
+    <SafeAreaView className="bg-background h-full py-10 items-center">
       <FlatList
         className="mb-5"
         data={exercisesList}
@@ -61,8 +61,8 @@ export default function ExercisesScreen() {
       <CustomButton
         title={"DODAJ NIESTANDARDOWE ĆWICZENIE"}
         handlePress={() => router.push("/createExercise")}
-        containerStyles={"w-[80%] bg-slate-400"}
-        textStyles={""}
+        containerStyles={"w-[90%] bg-slate-400"}
+        textStyles={"py-4"}
         isLoading={false}
       ></CustomButton>
     </SafeAreaView>

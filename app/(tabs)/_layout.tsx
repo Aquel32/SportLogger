@@ -15,12 +15,12 @@ export default function TabLayout() {
         headerRightContainerStyle: { right: 20 },
         headerTintColor: "white",
         tabBarStyle: {
-          backgroundColor: "#1A1C31",
+          backgroundColor: "black",
           borderColor: "#1A1C31",
           height: 55,
         },
-        headerStyle: { backgroundColor: "#1A1C31" },
-        tabBarActiveTintColor: "#EDF2F4",
+        headerStyle: { backgroundColor: "black" },
+        tabBarActiveTintColor: "cyan",
       }}
     >
       <Tabs.Screen

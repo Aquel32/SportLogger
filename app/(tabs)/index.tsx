@@ -102,7 +102,7 @@ export default function WorkoutScreen() {
   if (showTemplatePanel) {
     return (
       <ScrollView
-        className="bg-primary h-full w-full"
+        className="bg-background h-full w-full"
         contentContainerStyle={{ alignItems: "center" }}
       >
         <View className="w-[70%]">
@@ -190,7 +190,7 @@ export default function WorkoutScreen() {
   }
 
   return (
-    <SafeAreaView className="bg-primary h-full">
+    <SafeAreaView className="bg-background h-full">
       <SelectExercise
         show={showExercisePanel}
         setShow={setShowExercisePanel}

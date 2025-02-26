@@ -10,11 +10,16 @@ module.exports = {
           DEFAULT: "#2B2D42",
           100: "#1A1C31",
         },
-        secondary: {
-          DEFAULT: "#EF233C",
-          100: "#EF233C",
-          200: "#D90429",
+        secondary: "#f50057",
+        success: "#4caf50",
+        warning: "#ff9800",
+        danger: "#d32f2f",
+        background: {
+          DEFAULT: "#121212"
         },
+        surface: "#1e1e1e",
+        "text-primary": "#ffffff",
+        "text-secondary": "#b0bec5",
         black: {
           DEFAULT: "#000",
           100: "#1E1E2D",
