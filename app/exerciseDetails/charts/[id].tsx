@@ -11,6 +11,7 @@ import {
   ContributionGraph,
   StackedBarChart,
 } from "react-native-chart-kit";
+import { Category, Exercise } from "@/lib/types";
 
 const ExerciseDetails = () => {
   const { id } = useLocalSearchParams();
@@ -20,7 +21,20 @@ const ExerciseDetails = () => {
     workoutsList,
     updateWorkoutList,
   } = useGlobalContext();
-  const exercise = exercisesList[Number(id)];
+
+  let exercise: Exercise = {
+    id: -1,
+    title: "",
+    description: "",
+    imageUrl: "",
+    category: Category.Brak,
+  };
+
+  exercisesList.find((founded) => {
+    if (founded.id === Number(id)) {
+      exercise = founded;
+    }
+  });
 
   const chartData = {
     labels: Array<string>(),
@@ -33,7 +47,7 @@ const ExerciseDetails = () => {
 
   workoutsList.filter((workout) =>
     workout.exercises.some((activity) => {
-      if (activity.exerciseIndex == exercisesList.indexOf(exercise)) {
+      if (activity.exerciseIndex == exercise.id) {
         const date = new Date(workout.date);
         const dateString = `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;
 
@@ -44,10 +58,12 @@ const ExerciseDetails = () => {
           sumSets += Number(set.reps);
         });
 
-        const avgWeight = sumWeight / sumSets;
+        if (sumSets != 0) {
+          const avgWeight = sumWeight / sumSets;
 
-        chartData.labels.push(dateString);
-        chartData.datasets[0].data.push(avgWeight);
+          chartData.labels.push(dateString);
+          chartData.datasets[0].data.push(avgWeight);
+        }
       }
     })
   );
@@ -71,16 +87,16 @@ const ExerciseDetails = () => {
           <Text className="text-white">Średnia ciężarów</Text>
           <LineChart
             data={chartData}
-            width={350} // from react-native
+            width={350}
             height={220}
             yAxisLabel=""
             yAxisSuffix="kg"
-            yAxisInterval={1} // optional, defaults to 1
+            yAxisInterval={1}
             chartConfig={{
               backgroundColor: "gray",
               backgroundGradientFrom: "gray",
               backgroundGradientTo: "lightgray",
-              decimalPlaces: 1, // optional, defaults to 2dp
+              decimalPlaces: 1,
               color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
               labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
               style: {

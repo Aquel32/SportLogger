@@ -2,6 +2,7 @@ import { useGlobalContext } from "@/context/GlobalProvider";
 import { router, useLocalSearchParams } from "expo-router";
 import { Text, View, Image, TouchableOpacity } from "react-native";
 import ExerciseNavigation from "@/components/ExerciseNavigation";
+import { Category, Exercise } from "@/lib/types";
 
 const ExerciseDetails = () => {
   const { id } = useLocalSearchParams();
@@ -11,7 +12,20 @@ const ExerciseDetails = () => {
     workoutsList,
     updateWorkoutList,
   } = useGlobalContext();
-  const exercise = exercisesList[Number(id)];
+
+  let exercise: Exercise = {
+    id: -1,
+    title: "",
+    description: "",
+    imageUrl: "",
+    category: Category.Brak,
+  };
+
+  exercisesList.find((founded) => {
+    if (founded.id === Number(id)) {
+      exercise = founded;
+    }
+  });
 
   let max = -1;
   let date = new Date();

@@ -16,6 +16,7 @@ export default function CreateExercise() {
   } = useGlobalContext();
 
   const [exercise, setExercise] = useState<Exercise>({
+    id: exercisesList.length,
     title: "",
     description: "",
     imageUrl: "",
@@ -70,13 +71,11 @@ export default function CreateExercise() {
           }
           data={selectListData}
           save="key"
-          dropdownTextStyles={{color:"white"}}
-          disabledTextStyles={{color:"white"}}
-          inputStyles={{color:"white"}}
+          dropdownTextStyles={{ color: "white" }}
+          disabledTextStyles={{ color: "white" }}
+          inputStyles={{ color: "white" }}
         />
       </View>
-
-      {/*KATEGORIA*/}
 
       <CustomButton
         title={"Dodaj ćwiczenie"}

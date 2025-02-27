@@ -76,7 +76,7 @@ export default function WorkoutScreen() {
       return;
 
     const newActivity: Activity = {
-      exerciseIndex: exercisesList.indexOf(selectedExercise),
+      exerciseIndex: selectedExercise.id,
       sets: [],
     };
 
@@ -108,7 +108,7 @@ export default function WorkoutScreen() {
         <View className="w-[70%]">
           <Text className="text-white mt-5">SZABLONY</Text>
 
-          <View className="flex flex-row justify-between">
+          <View className="flex flex-row justify-between gap-5">
             <CustomButton
               title={"PUSTY SZABLON"}
               handlePress={() => {
@@ -119,7 +119,7 @@ export default function WorkoutScreen() {
                   categories: [],
                 });
               }}
-              containerStyles={"bg-slate-400 px-3 my-5 w-1/2"}
+              containerStyles={"bg-slate-400 px-3 my-5 w-1/2 shrink"}
               textStyles={"text-xs"}
               isLoading={false}
             />
@@ -127,7 +127,7 @@ export default function WorkoutScreen() {
             <CustomButton
               title={"POWRÓT"}
               handlePress={() => setShowTemplatePanel(false)}
-              containerStyles={"bg-slate-400 px-3 my-5 w-1/2"}
+              containerStyles={"bg-slate-400 px-3 my-5 w-1/2 shrink"}
               textStyles={"text-xs"}
               isLoading={false}
             />
@@ -235,21 +235,6 @@ export default function WorkoutScreen() {
                   isLoading={false}
                 />
               )}
-
-              {/* <CustomButton
-                title={"WYCZYŚĆ"}
-                handlePress={() => {
-                  setWorkout({
-                    exercises: [],
-                    date: new Date(),
-                    categories: [],
-                  });
-                  //removeSelfTemplate();
-                }}
-                containerStyles={"bg-slate-400 px-5 my-5"}
-                textStyles={""}
-                isLoading={false}
-              /> */}
             </View>
 
             <View className="w-[70%]">

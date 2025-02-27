@@ -24,14 +24,12 @@ export const WorkoutCard = ({ workout }: { workout: Workout }) => {
   return (
     <TouchableOpacity
       className="w-[300px] h-[100px] bg-gray-100 rounded-2xl mb-5 p-2 overflow-hidden items-center"
-      //onPress={() => deleteExercise(workoutsList.indexOf(workout))}
       onPress={() =>
         router.push({
           pathname: `/trainingDetails/[id]`,
           params: { id: workoutsList.indexOf(workout) },
         })
       }
-      //onPress={() => print()}
     >
       <View className="w-[90%] flex-row justify-between">
         <Text className="text-2xl text-black font-bold">

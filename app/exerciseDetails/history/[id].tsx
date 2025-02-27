@@ -4,7 +4,7 @@ import { Text, View, Image, FlatList, TouchableOpacity } from "react-native";
 import ExerciseNavigation from "@/components/ExerciseNavigation";
 import { WorkoutCard } from "@/app/(tabs)/history";
 import { ActivityCard } from "@/components/ActivitiesList";
-import { Activity } from "@/lib/types";
+import { Activity, Category, Exercise } from "@/lib/types";
 
 const ExerciseDetails = () => {
   const { id } = useLocalSearchParams();
@@ -14,7 +14,21 @@ const ExerciseDetails = () => {
     workoutsList,
     updateWorkoutList,
   } = useGlobalContext();
-  const exercise = exercisesList[Number(id)];
+
+  let exercise: Exercise = {
+    id: -1,
+    title: "",
+    description: "",
+    imageUrl: "",
+    category: Category.Brak,
+  };
+
+  exercisesList.find((founded) => {
+    if (founded.id === Number(id)) {
+      exercise = founded;
+    }
+  });
+
   return (
     <View className="bg-background h-full ">
       <ExerciseNavigation index={Number(id)}></ExerciseNavigation>

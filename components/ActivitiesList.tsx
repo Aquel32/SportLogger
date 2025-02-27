@@ -140,7 +140,6 @@ const ActivitiesList = ({
         exercises: arrayFromActivities,
         categories: arrayFromCategories,
       });
-      //removeSelfTemplate();
     }
   }
 
