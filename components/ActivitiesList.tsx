@@ -4,6 +4,7 @@ import { Activity, Exercise, Set, Workout } from "@/lib/types";
 import CustomButton from "./CustomButton";
 import FormField from "./FormField";
 import { useGlobalContext } from "@/context/GlobalProvider";
+import AntDesign from "@expo/vector-icons/AntDesign";
 
 export const ActivityCard = ({
   activity,
@@ -47,15 +48,15 @@ export const ActivityCard = ({
   }
 
   return (
-    <View className="bg-gray-500 p-2 my-2 rounded-xl">
+    <View className="bg-gray-600 p-2 my-2 rounded-xl">
       <View className="w-full flex flex-row justify-between pr-3">
-        <Text className="">{exercisesList[activity.exerciseIndex].title}</Text>
+        <Text className="text-white">{exercisesList[activity.exerciseIndex].title}</Text>
         {edit && (
           <TouchableOpacity
-            className="bg-red-300 px-1 flex justify-center items-center"
+            className="bg-red-300 px-1 flex justify-center items-center rounded-xl"
             onPress={() => removeExercise()}
           >
-            <Text>X</Text>
+            <AntDesign name="close" color={"black"}/>
           </TouchableOpacity>
         )}
       </View>
@@ -66,7 +67,7 @@ export const ActivityCard = ({
         data={activity.sets}
         renderItem={(item) => (
           <View className="w-full flex flex-row gap-3">
-            <Text className="self-center">{item.index + 1}</Text>
+            <Text className="self-center text-white">{item.index + 1}</Text>
             <FormField
               title="Powtórzenia"
               value={String(item.item.reps)}
@@ -91,17 +92,17 @@ export const ActivityCard = ({
             />
             {edit && (
               <TouchableOpacity
-                className="bg-red-300 w-10 h-10 self-center"
+                className="bg-red-300 w-10 h-10 self-center rounded-xl items-center justify-center"
                 onPress={() => removeSet(item.index)}
               >
-                <Text>-</Text>
+                <Text className="text-center">-</Text>
               </TouchableOpacity>
             )}
           </View>
         )}
         keyExtractor={(item, index) => index.toString()}
         ListEmptyComponent={() => (
-          <Text className="text-xs text-black font-bold">
+          <Text className="text-xs text-white font-bold text-center py-1">
             NIE DODAŁEŚ ŻADNYCH SERII DO ĆWICZENIA
           </Text>
         )}
@@ -111,8 +112,8 @@ export const ActivityCard = ({
         <CustomButton
           title={"DODAJ SERIĘ"}
           handlePress={addSet}
-          containerStyles={"m-2 bg-slate-400"}
-          textStyles={""}
+          containerStyles={"m-2 bg-cyan-100"}
+          textStyles={"text-xs"}
           isLoading={false}
         />
       )}
@@ -167,7 +168,7 @@ const ActivitiesList = ({
         />
       )}
       ListEmptyComponent={() => (
-        <Text className="text-xs text-slate-500 font-bold">
+        <Text className="text-xs text-white font-bold text-center">
           NIE DODAŁEŚ ŻADNYCH ĆWICZEŃ DO TRENINGU
         </Text>
       )}

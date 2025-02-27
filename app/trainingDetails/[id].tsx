@@ -125,7 +125,7 @@ const TrainingDetails = () => {
               <CustomButton
                 title={"DODAJ ĆWICZENIE"}
                 handlePress={() => setShowExercisePanel(true)}
-                containerStyles={"bg-slate-400 px-5 my-5"}
+                containerStyles={"bg-cyan-100 px-5 my-5"}
                 textStyles={""}
                 isLoading={false}
               />

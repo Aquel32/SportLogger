@@ -10,10 +10,11 @@ module.exports = {
           DEFAULT: "#2B2D42",
           100: "#1A1C31",
         },
-        secondary: "#f50057",
-        success: "#4caf50",
-        warning: "#ff9800",
-        danger: "#d32f2f",
+        cyan: {
+          // DEAFULT: "#00FFFF",
+          100: "#AEF7FF",
+          200: "#C3F3FA",
+        },
         background: {
           DEFAULT: "#121212"
         },
@@ -28,6 +29,7 @@ module.exports = {
         gray: {
           100: "#CDCDE0",
           200: "#EDF2F4",
+          600: "#3A3A3A",
         },
       },
     },

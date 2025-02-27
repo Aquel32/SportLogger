@@ -6,6 +6,7 @@ import { useGlobalContext } from "@/context/GlobalProvider";
 import { Activity, Category, Exercise, Set, Workout } from "@/lib/types";
 import { router } from "expo-router";
 import { SetStateAction, useEffect, useState } from "react";
+import AntDesign from "@expo/vector-icons/AntDesign";
 import {
   FlatList,
   GestureResponderEvent,
@@ -105,10 +106,10 @@ export default function WorkoutScreen() {
         className="bg-background h-full w-full"
         contentContainerStyle={{ alignItems: "center" }}
       >
-        <View className="w-[70%]">
-          <Text className="text-white mt-5">SZABLONY</Text>
+        <View className="w-full px-4">
+          <Text className="text-white mt-5 text-l font-bold text-center">SZABLONY</Text>
 
-          <View className="flex flex-row justify-between">
+          <View className="flex flex-row gap-2">
             <CustomButton
               title={"PUSTY SZABLON"}
               handlePress={() => {
@@ -119,7 +120,7 @@ export default function WorkoutScreen() {
                   categories: [],
                 });
               }}
-              containerStyles={"bg-slate-400 px-3 my-5 w-1/2"}
+              containerStyles={"bg-cyan-100 px-3 my-5 w-[50%] shrink"}
               textStyles={"text-xs"}
               isLoading={false}
             />
@@ -127,17 +128,17 @@ export default function WorkoutScreen() {
             <CustomButton
               title={"POWRÓT"}
               handlePress={() => setShowTemplatePanel(false)}
-              containerStyles={"bg-slate-400 px-3 my-5 w-1/2"}
+              containerStyles={"bg-cyan-100 px-3 my-5 w-[50%] shrink"}
               textStyles={"text-xs"}
               isLoading={false}
             />
           </View>
 
           <FlatList
-            className="flex flex-column gap-5"
+            className="flex flex-column gap-5 "
             data={templateList}
             renderItem={(item) => (
-              <View className="bg-gray-500 w-full p-2 mb-5 rounded-xl relative flex flex-row">
+              <View className="bg-gray-400 w-full p-2 mb-5 rounded-xl relative flex flex-row">
                 <TouchableOpacity
                   className="h-full w-[90%]"
                   onPress={() => {
@@ -146,13 +147,13 @@ export default function WorkoutScreen() {
                     setShowTemplatePanel(false);
                   }}
                 >
-                  <View>
+                  <View className="flex">
                     {item.item.exercises.map(
                       (activity, index) =>
                         index < 3 && (
                           <Text
                             key={exercisesList[activity.exerciseIndex].title}
-                            className="text-xs"
+                            className="text-xs py-2"
                             numberOfLines={1}
                           >
                             {exercisesList[activity.exerciseIndex].title} x{" "}
@@ -169,16 +170,15 @@ export default function WorkoutScreen() {
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => removeTemplate(item.index)}
-                  className="w-[10%] h-full bg-red-300"
+                  className="w-[10%] h-full bg-cyan-100 rounded-xl flex items-center justify-center"
                 >
-                  <Text className="text-xs w-[100%] h-8 items-center justify-center">
-                    X
-                  </Text>
+                  
+                  <AntDesign name="close" size={16} color={"black"} className="text-xs w-[100%]  items-center text-center p-1" />
                 </TouchableOpacity>
               </View>
             )}
             ListEmptyComponent={() => (
-              <Text className="text-xs text-slate-500 font-bold">
+              <Text className="text-xs text-white font-bold text-center">
                 NIE DODAŁEŚ ŻADNYCH SZABLONÓW
               </Text>
             )}
@@ -206,13 +206,13 @@ export default function WorkoutScreen() {
         nestedScrollEnabled={true}
         ListHeaderComponent={
           <View className="w-full items-center">
-            <Text className="text-slate-500 font-bold mt-5">NOWY TRENING</Text>
+            <Text className="text-white font-bold mt-5">NOWY TRENING</Text>
 
-            <View className="flex flex-row justify-between">
+            <View className="flex flex-row justify-between gap-2 px-4">
               <CustomButton
                 title={"WYBIERZ SZABLON"}
                 handlePress={() => setShowTemplatePanel(true)}
-                containerStyles={"bg-slate-400 px-3 my-5"}
+                containerStyles={"bg-cyan-100 px-3 my-5 w-[50%] shrink"}
                 textStyles={"text-xs"}
                 isLoading={false}
               />
@@ -221,8 +221,8 @@ export default function WorkoutScreen() {
                 <CustomButton
                   title={"ZAPISZ"}
                   handlePress={saveAsTemplate}
-                  containerStyles={"bg-slate-400 px-5 my-5"}
-                  textStyles={""}
+                  containerStyles={"bg-cyan-100 px-5 my-5 w-[50%] shrink"}
+                  textStyles={"text-xs"}
                   isLoading={false}
                 />
               )}
@@ -230,8 +230,8 @@ export default function WorkoutScreen() {
                 <CustomButton
                   title={"ZAPISANO"}
                   handlePress={() => {}}
-                  containerStyles={"bg-slate-400 px-5 my-5"}
-                  textStyles={""}
+                  containerStyles={"bg-cyan-100 px-5 my-5 w-[50%] shrink"}
+                  textStyles={"text-xs"}
                   isLoading={false}
                 />
               )}
@@ -252,8 +252,8 @@ export default function WorkoutScreen() {
               /> */}
             </View>
 
-            <View className="w-[70%]">
-              <Text className="text-white mt-5">ĆWICZENIA</Text>
+            <View className="flex px-4">
+              <Text className="text-white text-center font-bold mt-5 mb-2">ĆWICZENIA</Text>
               <ActivitiesList
                 workout={workout}
                 setWorkout={updateWorkout}
@@ -264,16 +264,16 @@ export default function WorkoutScreen() {
             <CustomButton
               title={"DODAJ ĆWICZENIE"}
               handlePress={() => setShowExercisePanel(true)}
-              containerStyles={"bg-slate-400 px-5 my-5"}
-              textStyles={""}
+              containerStyles={"bg-cyan-100 px-5 my-5 w-[90%] shrink"}
+              textStyles={"text-xs"}
               isLoading={false}
             />
 
             <CustomButton
               title={"DODAJ TRENING"}
               handlePress={submitForm}
-              containerStyles={"bg-slate-400 px-5 my-5"}
-              textStyles={""}
+              containerStyles={"bg-cyan-100 px-5 my-5 w-[90%] shrink"}
+              textStyles={"text-xs"}
               isLoading={false}
             />
           </View>
