@@ -61,8 +61,8 @@ export default function ExercisesScreen() {
       <CustomButton
         title={"DODAJ NIESTANDARDOWE ĆWICZENIE"}
         handlePress={() => router.push("/createExercise")}
-        containerStyles={"w-[90%] bg-slate-400"}
-        textStyles={"py-4"}
+        containerStyles={"w-[90%] bg-primary-100"}
+        textStyles={"py-4 text-white"}
         isLoading={false}
       ></CustomButton>
     </SafeAreaView>

@@ -13,7 +13,7 @@ export const ExerciseCard = ({
 }) => {
   return (
     <TouchableOpacity
-      className="w-48 h-[145px] bg-gray-100 rounded-2xl mb-5 overflow-hidden items-center relative"
+      className="w-48 h-[125px] bg-gray-100 rounded-2xl mb-5 overflow-hidden items-center relative"
       onPress={onPress}
     >
       <Image
@@ -27,9 +27,7 @@ export const ExerciseCard = ({
 
       <View className="w-[90%]">
         <Text className="text-2xl text-black font-bold">{exercise.title}</Text>
-        <Text className="text-xs text-black font-bold" numberOfLines={1}>
-          {exercise.description}
-        </Text>
+
       </View>
 
       <Text className="text-s text-black absolute top-[5px] right-[5px] bg-red-100 rounded-xl p-1">

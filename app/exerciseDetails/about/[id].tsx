@@ -36,7 +36,7 @@ const ExerciseDetails = () => {
   }
 
   return (
-    <View className="bg-[#18122B] h-full ">
+    <View className="bg-background h-full ">
       <ExerciseNavigation index={Number(id)}></ExerciseNavigation>
       <Image
         source={
@@ -47,7 +47,7 @@ const ExerciseDetails = () => {
         className="w-full h-40"
       />
       <View className="flex flex-row justify-between m-2">
-        {edit ? (
+        {edit === false ? (
           <Text className="text-4xl text-white">{exercise.title}</Text>
         ) : (
           <FormField
@@ -77,7 +77,7 @@ const ExerciseDetails = () => {
         </View>
       </View>
 
-      {edit ? (
+      {edit === false ? (
         <Text className="text-xl text-white m-2">{exercise.description}</Text>
       ) : (
         <FormField

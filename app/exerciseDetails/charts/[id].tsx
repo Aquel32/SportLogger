@@ -53,7 +53,7 @@ const ExerciseDetails = () => {
   );
 
   return (
-    <View className="bg-[#18122B] h-full">
+    <View className="bg-background h-full">
       <ExerciseNavigation index={Number(id)}></ExerciseNavigation>
       <Image
         source={

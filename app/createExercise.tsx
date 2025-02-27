@@ -70,6 +70,9 @@ export default function CreateExercise() {
           }
           data={selectListData}
           save="key"
+          dropdownTextStyles={{color:"white"}}
+          disabledTextStyles={{color:"white"}}
+          inputStyles={{color:"white"}}
         />
       </View>
 

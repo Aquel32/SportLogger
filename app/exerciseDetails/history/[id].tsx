@@ -16,7 +16,7 @@ const ExerciseDetails = () => {
   } = useGlobalContext();
   const exercise = exercisesList[Number(id)];
   return (
-    <View className="bg-[#18122B] h-full ">
+    <View className="bg-background h-full ">
       <ExerciseNavigation index={Number(id)}></ExerciseNavigation>
       <Image
         source={

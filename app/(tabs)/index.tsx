@@ -141,7 +141,8 @@ export default function WorkoutScreen() {
                 <TouchableOpacity
                   className="h-full w-[90%]"
                   onPress={() => {
-                    setWorkout(item.item);
+                    const templateCopy = JSON.parse(JSON.stringify(item.item));
+                    setWorkout(templateCopy);
                     setShowTemplatePanel(false);
                   }}
                 >

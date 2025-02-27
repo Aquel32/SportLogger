@@ -26,10 +26,10 @@ const SelectExercise = ({
     <View className="w-full h-full items-center my-5 gap-5 bg-gray-500 rounded-xl">
       <View className="w-[80%] items-end">
         <TouchableOpacity
-          className="p-2 bg-red-300"
+          className="w-10 h-10 items-center justify-center rounded-full bg-red-300"
           onPress={() => setShow(false)}
         >
-          <Text>AA</Text>
+          <Text>X</Text>
         </TouchableOpacity>
       </View>
 

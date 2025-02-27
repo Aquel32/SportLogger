@@ -61,7 +61,7 @@ const TrainingDetails = () => {
   }
 
   return (
-    <View className="bg-primary h-full">
+    <View className="bg-background h-full">
       <SelectExercise
         show={showExercisePanel}
         setShow={setShowExercisePanel}
