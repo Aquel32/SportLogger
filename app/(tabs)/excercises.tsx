@@ -41,7 +41,7 @@ export default function ExercisesScreen() {
             onPress={() =>
               router.push({
                 pathname: `/exerciseDetails/about/[id]`,
-                params: { id: index },
+                params: { id: item.id },
               })
             }
           />

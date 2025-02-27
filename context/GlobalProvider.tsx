@@ -49,7 +49,6 @@ const GlobalProvider = ({ children }: { children: React.ReactNode }) => {
     Save("templates.txt", data);
   }
 
-
   useEffect(() => {
     async function loadDataOnStart() {
       if (await DoesFileExist("exercises.txt")) {

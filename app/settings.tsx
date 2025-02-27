@@ -1,8 +1,18 @@
 import CustomButton from "@/components/CustomButton";
+import { useGlobalContext } from "@/context/GlobalProvider";
 import { View } from "react-native";
 
 
 export default function SettingsPage() {
+  const { updateExercisesList, updateWorkoutList, updateTemplateList } =
+    useGlobalContext();
+
+  function resetData() {
+    updateExercisesList([]);
+    updateWorkoutList([]);
+    updateTemplateList([]);
+  }
+
   return (
     <View className="bg-background h-full items-center p-10 gap-5 w-full ">
       <CustomButton
@@ -21,7 +31,7 @@ export default function SettingsPage() {
       />
       <CustomButton
         title={"Reset do ustawień fabrycznych"}
-        handlePress={() => {}}
+        handlePress={resetData}
         containerStyles={"bg-red-400 px-5 w-[90%]"}
         textStyles={"text-black font-bold"}
         isLoading={false}

@@ -77,7 +77,7 @@ export default function WorkoutScreen() {
       return;
 
     const newActivity: Activity = {
-      exerciseIndex: exercisesList.indexOf(selectedExercise),
+      exerciseIndex: selectedExercise.id,
       sets: [],
     };
 
@@ -235,21 +235,6 @@ export default function WorkoutScreen() {
                   isLoading={false}
                 />
               )}
-
-              {/* <CustomButton
-                title={"WYCZYŚĆ"}
-                handlePress={() => {
-                  setWorkout({
-                    exercises: [],
-                    date: new Date(),
-                    categories: [],
-                  });
-                  //removeSelfTemplate();
-                }}
-                containerStyles={"bg-slate-400 px-5 my-5"}
-                textStyles={""}
-                isLoading={false}
-              /> */}
             </View>
 
             <View className="flex px-4">

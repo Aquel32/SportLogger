@@ -49,8 +49,6 @@ const TrainingDetails = () => {
       categories: [...workout.categories, selectedExercise.category],
       exercises: [...workout.exercises, newActivity],
     });
-
-    //removeSelfTemplate();
   }
 
   function deleteExercise() {
