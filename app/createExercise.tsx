@@ -1,4 +1,12 @@
-import { View, Text, SafeAreaView, GestureResponderEvent } from "react-native";
+import {
+  View,
+  Text,
+  SafeAreaView,
+  GestureResponderEvent,
+  Image,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
 import React, { useState } from "react";
 import { Category, Exercise } from "@/lib/types";
 import FormField from "@/components/FormField";
@@ -6,6 +14,8 @@ import CustomButton from "@/components/CustomButton";
 import { useGlobalContext } from "@/context/GlobalProvider";
 import { router } from "expo-router";
 import { SelectList } from "react-native-dropdown-select-list";
+import * as DocumentPicker from "expo-document-picker";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 export default function CreateExercise() {
   const {
@@ -25,8 +35,28 @@ export default function CreateExercise() {
 
   function submitForm() {
     //check if form is empty
+
+    if (
+      exercise.title === "" ||
+      exercise.description === "" ||
+      exercise.category === Category.Brak
+    ) {
+      Alert.alert("Błąd", "Musisz wypełnić wszystkie pola.");
+      return;
+    }
+
     updateExercisesList([...exercisesList, exercise]);
     router.back();
+  }
+
+  async function openPicker() {
+    const result = await DocumentPicker.getDocumentAsync({
+      type: ["image/png", "image/jpg", "image/jpeg"],
+    });
+
+    if (!result.canceled) {
+      setExercise({ ...exercise, imageUrl: result.assets[0].uri });
+    }
   }
 
   const selectListData: Array<{ key: string; value: string }> = [];
@@ -57,13 +87,33 @@ export default function CreateExercise() {
           otherStyles={""}
         />
 
-        <FormField
-          title={"URL Zdjęcia"}
-          value={exercise.imageUrl}
-          placeholder={"Wpisz tutaj URL do zdjęcia"}
-          handleChangeText={(e) => setExercise({ ...exercise, imageUrl: e })}
-          otherStyles={""}
-        />
+        {exercise.imageUrl === "" ? (
+          <CustomButton
+            title={"Wybierz zdjęcie"}
+            handlePress={openPicker}
+            containerStyles={"bg-black-100 px-5 border-2 border-black-200"}
+            textStyles={"text-white"}
+            isLoading={false}
+          />
+        ) : (
+          <TouchableOpacity className="w-full relative" onPress={openPicker}>
+            <TouchableOpacity
+              className="absolute z-10 right-1 top-1"
+              onPress={() => setExercise({ ...exercise, imageUrl: "" })}
+            >
+              <Ionicons
+                name="trash-outline"
+                size={24}
+                color={"black"}
+                className="bg-red-300 p-2 rounded-full"
+              />
+            </TouchableOpacity>
+            <Image
+              source={{ uri: exercise.imageUrl }}
+              className="h-60 w-full object-scale-down"
+            />
+          </TouchableOpacity>
+        )}
 
         <SelectList
           setSelected={(e: string) =>
