@@ -7,6 +7,10 @@ import { Activity, Exercise, Set, Workout } from "@/lib/types";
 import { useState } from "react";
 import CustomButton from "@/components/CustomButton";
 import SelectExercise from "../../components/selectExercise";
+import DateTimePicker, {
+  DateType,
+  getDefaultStyles,
+} from "react-native-ui-datepicker";
 
 const TrainingDetails = () => {
   const { id } = useLocalSearchParams();
@@ -19,6 +23,7 @@ const TrainingDetails = () => {
 
   const [workout, setWorkout] = useState<Workout>(workoutsList[Number(id)]);
   const [showExercisePanel, setShowExercisePanel] = useState(false);
+  const [showDate, setShowDate] = useState(false);
 
   function updateWorkout(newWorkout: Workout) {
     setWorkout(newWorkout);
@@ -28,7 +33,6 @@ const TrainingDetails = () => {
     updateWorkoutList(array);
   }
 
-  const date = new Date(workout.date);
   const [edit, setEdit] = useState(false);
 
   function addNewExercise(selectedExercise: Exercise) {
@@ -58,6 +62,15 @@ const TrainingDetails = () => {
     updateWorkoutList(array);
   }
 
+  const defaultStyles = getDefaultStyles();
+  const [selected, setSelected] = useState<DateType>(workout.date);
+
+  function updateDate(newDate: DateType) {
+    setSelected(newDate);
+    const date = selected as Date;
+    updateWorkout({ ...workout, date: date });
+  }
+
   return (
     <View className="bg-background h-full">
       <SelectExercise
@@ -74,17 +87,34 @@ const TrainingDetails = () => {
         ListHeaderComponent={
           <View className="flex-column py-5">
             <View className="flex-row justify-between px-4">
-              <Text className="text-4xl text-white m-2">
-                {date.getDate() +
-                  "." +
-                  (date.getMonth() + 1) +
-                  "." +
-                  date.getFullYear()}
-              </Text>
+              <View className="flex flex-row items-center">
+                <TouchableOpacity
+                  onPress={() => {
+                    if (edit) {
+                      setShowDate(!showDate);
+                    }
+                  }}
+                >
+                  <Text
+                    className={`text-4xl text-white m-2 ${
+                      edit === true && "underline"
+                    }`}
+                  >
+                    {(selected as Date).getDate() +
+                      "." +
+                      ((selected as Date).getMonth() + 1) +
+                      "." +
+                      (selected as Date).getFullYear()}
+                  </Text>
+                </TouchableOpacity>
+              </View>
 
               <View className="flex-row gap-3">
                 <TouchableOpacity
-                  onPress={() => setEdit(!edit)}
+                  onPress={() => {
+                    setEdit(!edit);
+                    setShowDate(false);
+                  }}
                   className="bg-orange-500 w-12 h-12 items-center justify-center rounded-full"
                 >
                   <Ionicons
@@ -108,6 +138,23 @@ const TrainingDetails = () => {
                 </TouchableOpacity>
               </View>
             </View>
+
+            {edit === true && showDate === true && (
+              <View className="w-full items-center">
+                <View className="w-[70%]">
+                  <DateTimePicker
+                    mode="single"
+                    date={selected}
+                    onChange={({ date }) => updateDate(date)}
+                    styles={{
+                      ...defaultStyles,
+                      today: { backgroundColor: "#ababab" },
+                    }}
+                    className="bg-white p-2 rounded-xl"
+                  />
+                </View>
+              </View>
+            )}
 
             <View className="items-center">
               <View className="w-[70%]">

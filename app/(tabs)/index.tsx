@@ -107,7 +107,9 @@ export default function WorkoutScreen() {
         contentContainerStyle={{ alignItems: "center" }}
       >
         <View className="w-full px-4">
-          <Text className="text-white mt-5 text-l font-bold text-center">SZABLONY</Text>
+          <Text className="text-white mt-5 text-l font-bold text-center">
+            SZABLONY
+          </Text>
 
           <View className="flex flex-row gap-2">
             <CustomButton
@@ -172,8 +174,12 @@ export default function WorkoutScreen() {
                   onPress={() => removeTemplate(item.index)}
                   className="w-[10%] h-full bg-cyan-100 rounded-xl flex items-center justify-center"
                 >
-                  
-                  <AntDesign name="close" size={16} color={"black"} className="text-xs w-[100%]  items-center text-center p-1" />
+                  <AntDesign
+                    name="close"
+                    size={16}
+                    color={"black"}
+                    className="text-xs w-[100%]  items-center text-center p-1"
+                  />
                 </TouchableOpacity>
               </View>
             )}
@@ -238,7 +244,9 @@ export default function WorkoutScreen() {
             </View>
 
             <View className="flex px-4">
-              <Text className="text-white text-center font-bold mt-5 mb-2">ĆWICZENIA</Text>
+              <Text className="text-white text-center font-bold mt-5 mb-2">
+                ĆWICZENIA
+              </Text>
               <ActivitiesList
                 workout={workout}
                 setWorkout={updateWorkout}
