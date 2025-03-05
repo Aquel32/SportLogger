@@ -100,9 +100,11 @@ const TrainingDetails = () => {
                       edit === true && "underline"
                     }`}
                   >
-                    {(selected as Date).getDate() +
+                    {(selected as Date).getDate().toString().padStart(2, "0") +
                       "." +
-                      ((selected as Date).getMonth() + 1) +
+                      ((selected as Date).getMonth() + 1)
+                        .toString()
+                        .padStart(2, "0") +
                       "." +
                       (selected as Date).getFullYear()}
                   </Text>

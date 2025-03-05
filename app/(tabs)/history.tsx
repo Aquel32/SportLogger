@@ -33,9 +33,9 @@ export const WorkoutCard = ({ workout }: { workout: Workout }) => {
     >
       <View className="w-[90%] flex-row justify-between">
         <Text className="text-2xl text-black font-bold">
-          {date.getDate() +
+          {date.getDate().toString().padStart(2, "0") +
             "." +
-            (date.getMonth() + 1) +
+            (date.getMonth() + 1).toString().padStart(2, "0") +
             "." +
             date.getFullYear()}
         </Text>
